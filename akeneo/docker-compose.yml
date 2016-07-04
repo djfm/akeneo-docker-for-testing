@@ -1,0 +1,24 @@
+version: '2'
+services:
+  database:
+    container_name: akeneo-mysql
+    image: mysql/mysql-server:5.7
+    volumes:
+      - "./mysql-data:/var/lib/mysql"
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_USER=akeneo_pim
+      - MYSQL_PASSWORD=akeneo_pim
+      - MYSQL_DATABASE=akeneo_pim
+
+  app:
+    container_name: akeneo
+    build: .
+    volumes:
+      - "./log:/var/log"
+    ports:
+      - "90:80"
+    links:
+      - database
+    depends_on:
+      - database
